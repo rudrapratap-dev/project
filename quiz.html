@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz App</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(to bottom right, #6a11cb, #2575fc);
+      color: #fff;
+    }
+
+    .container {
+      text-align: center;
+      padding: 20px;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    h1, h2 {
+      margin-bottom: 20px;
+    }
+
+    p {
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+
+    button {
+      background: #ff6f61;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #ff4433;
+    }
+
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+    }
+
+    .next-btn {
+      margin-top: 15px;
+    }
+
+    .feedback {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Landing Page -->
+  <div class="container" id="landing-page">
+    <h1>Welcome to the Quiz!</h1>
+    <p>Test your knowledge and have fun.</p>
+    <button onclick="startQuiz()">Start Quiz</button>
+  </div>
+
+  <!-- Quiz Page -->
+  <div class="container hidden" id="quiz-page">
+    <h2>Question 1:</h2>
+    <p>What is the capital of France?</p>
+    <div class="options">
+      <button onclick="checkAnswer(this, 'correct')">Paris</button>
+      <button onclick="checkAnswer(this, 'wrong')">London</button>
+      <button onclick="checkAnswer(this, 'wrong')">Rome</button>
+      <button onclick="checkAnswer(this, 'wrong')">Berlin</button>
+    </div>
+    <p class="feedback" id="feedback"></p>
+    <button class="next-btn" onclick="showResult()">Next Question</button>
+  </div>
+
+  <!-- Result Page -->
+  <div class="container hidden" id="result-page">
+    <h1>Quiz Completed!</h1>
+    <p>Your score: <span id="score">0/1</span></p>
+    <button onclick="restartQuiz()">Retake Quiz</button>
+  </div>
+
+  <script>
+    let score = 0;
+
+    function startQuiz() {
+      document.getElementById('landing-page').classList.add('hidden');
+      document.getElementById('quiz-page').classList.remove('hidden');
+    }
+
+    function checkAnswer(button, answer) {
+      const feedback = document.getElementById('feedback');
+      if (answer === 'correct') {
+        feedback.textContent = "Correct Answer!";
+        feedback.style.color = "lightgreen";
+        score++;
+      } else {
+        feedback.textContent = "Wrong Answer!";
+        feedback.style.color = "red";
+      }
+      disableOptions();
+    }
+
+    function disableOptions() {
+      const options = document.querySelectorAll('.options button');
+      options.forEach(option => {
+        option.disabled = true;
+      });
+    }
+
+    function showResult() {
+      document.getElementById('quiz-page').classList.add('hidden');
+      document.getElementById('result-page').classList.remove('hidden');
+      document.getElementById('score').textContent = `${score}/1`;
+    }
+
+    function restartQuiz() {
+      score = 0;
+      document.getElementById('result-page').classList.add('hidden');
+      document.getElementById('landing-page').classList.remove('hidden');
+      resetQuiz();
+    }
+
+    function resetQuiz() {
+      const options = document.querySelectorAll('.options button');
+      options.forEach(option => {
+        option.disabled = false;
+      });
+      document.getElementById('feedback').textContent = "";
+    }
+  </script>
+</body>
+</html>
